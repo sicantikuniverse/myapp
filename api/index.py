@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
-from pathlib import Path
+import os
 
 app = Flask(__name__, template_folder="../templates")
 
-DB_PATH = Path(__file__).resolve().parent.parent / "database.db"
+DB_PATH = os.path.join(os.path.dirname(__file__), "../database.db")
 
 def db():
     conn = sqlite3.connect(DB_PATH)
@@ -27,5 +27,6 @@ def add():
     conn.close()
     return redirect("/")
 
-def handler(request, context):
-    return app(request.environ, start_response=context["start_response"])
+# Vercel handler
+def handler(request):
+    return app
